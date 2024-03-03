@@ -1,0 +1,33 @@
+version: "3.2"
+services:
+  api:
+    image: "registry.thinklabs.com.vn:5000/tcameratrafficdevapi:latest"
+    deploy:
+      replicas: 1
+      placement:
+        # constraints: [node.labels.environment==development]
+        constraints: [ node.hostname==thinklabs03 ]
+      restart_policy:
+        condition: any
+    environment:
+      PORT: 4066
+      NODE_ENV: "production"
+      MONGO_URI: "mongodb://tCameraGT:tCameraGT@113.160.181.249:4014/tCameraGT?retryWrites=true&connectTimeoutMS=10000&authSource=tCameraGT&authMechanism=SCRAM-SHA-256"
+      SERVICE_4066_NAME: "tcameratrafficdevapi"
+      SERVICE_NAME: "tcameratrafficdevapi"
+      SERVICE_TAGS: "tcameratrafficdevapi"
+    networks:
+      - host
+    ports:
+      - target: 4066
+        published: 4066
+        mode: host
+    volumes:
+      - storage:/usr/src/app/storage
+      
+volumes:
+  storage:
+    driver: local
+
+networks:
+  host:
