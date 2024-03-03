@@ -1,0 +1,27 @@
+version: "3.2"
+services:
+  api:
+    image: "tcameraaiapi:latest"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+    environment:
+      PORT: 3000
+      NODE_ENV: "production"
+      MONGO_URI: "mongodb://tcamerapro:thinklabS2023@103.124.95.232:17017/tCameraPro?authSource=tCameraPro&authMechanism=SCRAM-SHA-1"
+    networks:
+      - host
+    ports:
+      - target: 3000
+        published: 3000
+        mode: host
+    volumes:
+      - storage:/usr/src/app/storage
+      
+volumes:
+  storage:
+    driver: local
+
+networks:
+  host:
